@@ -21,11 +21,13 @@ public class Facade implements IFacade{
     
         for (Person person : people) {
             
-            if(person)
+            if(tlf == tlf){
+                return person;
+            }
             
         }
         
-        
+        return null;
     }
 
     @Override

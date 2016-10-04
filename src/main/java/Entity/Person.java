@@ -6,12 +6,17 @@
 package Entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -44,6 +49,14 @@ public class Person implements Serializable {
     @Size(max = 30)
     @Column(name = "lastName")
     private String lastName;
+
+    
+    @JoinTable(
+            name = "PersonHobbyList",
+            joinColumns = @JoinColumn(name = "PersonID", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "HobbyID", referencedColumnName = "id"))
+    @ManyToMany
+    List<Hobby> hobbies = new ArrayList<>();
 
     public Person() {
     }
@@ -101,5 +114,5 @@ public class Person implements Serializable {
     public String toString() {
         return "Entity.Person[ id=" + id + " ]";
     }
-    
+
 }

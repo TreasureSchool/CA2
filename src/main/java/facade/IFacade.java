@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface IFacade {
  
-    public Person PersonInfoTlf(List<Person> people, int tlf);
+    public Person PersonInfoTlf(int tlf);
     
     public Company CompanyInfoCVR(int cvr);
     public Company CompanyInfoTlf(int tlf);

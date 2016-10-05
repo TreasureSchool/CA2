@@ -1,77 +1,51 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author Joachim
  */
 @Entity
-@Table(name = "person")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p"),
-    @NamedQuery(name = "Person.findById", query = "SELECT p FROM Person p WHERE p.id = :id"),
-    @NamedQuery(name = "Person.findByFirstName", query = "SELECT p FROM Person p WHERE p.firstName = :firstName"),
-    @NamedQuery(name = "Person.findByLastName", query = "SELECT p FROM Person p WHERE p.lastName = :lastName")})
-public class Person implements Serializable {
+public class Person extends InfoEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
-    @Size(max = 30)
-    @Column(name = "firstName")
+    @Id
+    private Long id;
     private String firstName;
-    @Size(max = 30)
-    @Column(name = "lastName")
     private String lastName;
 
-    
-    @JoinTable(
-            name = "PersonHobbyList",
-            joinColumns = @JoinColumn(name = "PersonID", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "HobbyID", referencedColumnName = "id"))
-    @ManyToMany
-    List<Hobby> hobbies = new ArrayList<>();
+    @ManyToMany(cascade = (CascadeType.PERSIST))
+    private List<Hobby> hobbies = new ArrayList();
 
     public Person() {
     }
 
-    public Person(String firstName, String lastName) {
+    public Person(String firstName, String lastName, String email) {
+        super(email);
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public Integer getId() {
-        return id;
+    public void addHobby(Hobby hobby) {
+        hobbies.add(hobby);
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public List<Hobby> getHobbies() {
+        return hobbies;
+    }
+
+    public void setHobbies(List<Hobby> hobbies) {
+        this.hobbies = hobbies;
     }
 
     public String getFirstName() {
@@ -88,6 +62,14 @@ public class Person implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
@@ -112,7 +94,7 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.Person[ id=" + id + " ]";
+        return "entities.Person[ id=" + id + " ]";
     }
 
 }

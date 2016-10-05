@@ -36,7 +36,7 @@ public class Facade implements IFacade {
         Person person;
         try{
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT e FROM Phone e WHERE e.number = :number").setParameter("number", tlf);
+            Query query = em.createQuery("SELECT e FROM Person e WHERE e.number = :number").setParameter("number", tlf);
             person = (Person) query.getSingleResult();
             em.getTransaction().commit();
         } finally {

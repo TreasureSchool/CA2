@@ -1,64 +1,40 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entity;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
- *
  * @author Joachim
  */
 @Entity
-@Table(name = "address")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Address.findAll", query = "SELECT a FROM Address a"),
-    @NamedQuery(name = "Address.findById", query = "SELECT a FROM Address a WHERE a.id = :id"),
-    @NamedQuery(name = "Address.findByStreet", query = "SELECT a FROM Address a WHERE a.street = :street"),
-    @NamedQuery(name = "Address.findByAdditionalInfo", query = "SELECT a FROM Address a WHERE a.additionalInfo = :additionalInfo")})
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
-    @Size(max = 50)
-    @Column(name = "Street")
+    private Long id;
+
     private String street;
-    @Size(max = 100)
-    @Column(name = "AdditionalInfo")
-    private String additionalInfo;
+
+    @ManyToOne(cascade = (CascadeType.PERSIST))
+    private CityInfo city;
+
+    @OneToMany
+    List<InfoEntity> entities;
 
     public Address() {
     }
 
-    public Address(String Street, String AdditionalInfo) {
-        this.street = Street;
-        this.additionalInfo = AdditionalInfo;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public Address(String street, CityInfo city) {
+        this.street = street;
+        this.city = city;
     }
 
     public String getStreet() {
@@ -69,12 +45,28 @@ public class Address implements Serializable {
         this.street = street;
     }
 
-    public String getAdditionalInfo() {
-        return additionalInfo;
+    public CityInfo getCity() {
+        return city;
     }
 
-    public void setAdditionalInfo(String additionalInfo) {
-        this.additionalInfo = additionalInfo;
+    public void setCity(CityInfo city) {
+        this.city = city;
+    }
+
+    public List<InfoEntity> getEntities() {
+        return entities;
+    }
+
+    public void setEntities(List<InfoEntity> entities) {
+        this.entities = entities;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
@@ -99,7 +91,7 @@ public class Address implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.Address[ id=" + id + " ]";
+        return "entities.Address[ id=" + id + " ]";
     }
-    
+
 }

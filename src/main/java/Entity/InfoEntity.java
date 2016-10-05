@@ -1,61 +1,64 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entity;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
- *
  * @author Joachim
  */
 @Entity
-@Table(name = "infoentity")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Infoentity.findAll", query = "SELECT i FROM Infoentity i"),
-    @NamedQuery(name = "Infoentity.findById", query = "SELECT i FROM Infoentity i WHERE i.id = :id"),
-    @NamedQuery(name = "Infoentity.findByEmail", query = "SELECT i FROM Infoentity i WHERE i.email = :email")})
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class InfoEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    @Size(max = 40)
-    @Column(name = "email")
+    private Long id;
+
     private String email;
+
+    @OneToMany(cascade = (CascadeType.PERSIST))
+    private List<Phone> phones = new ArrayList();
+
+    @ManyToOne(cascade = (CascadeType.PERSIST))
+    private Address address;
 
     public InfoEntity() {
     }
 
-    public InfoEntity(int id, String email) {
-        this.id = id;
+    public InfoEntity(String email) {
         this.email = email;
     }
 
-    public Integer getId() {
-        return id;
+    public void addPhone(Phone phone) {
+        phones.add(phone);
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<Phone> phone) {
+        this.phones = phone;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public String getEmail() {
@@ -64,6 +67,14 @@ public class InfoEntity implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
@@ -88,7 +99,7 @@ public class InfoEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.Infoentity[ id=" + id + " ]";
+        return "entities.InfoEntity[ id=" + id + " ]";
     }
-    
+
 }

@@ -1,57 +1,30 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author Joachim
  */
 @Entity
-@Table(name = "hobby")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Hobby.findAll", query = "SELECT h FROM Hobby h"),
-    @NamedQuery(name = "Hobby.findById", query = "SELECT h FROM Hobby h WHERE h.id = :id"),
-    @NamedQuery(name = "Hobby.findByName", query = "SELECT h FROM Hobby h WHERE h.name = :name"),
-    @NamedQuery(name = "Hobby.findByDescription", query = "SELECT h FROM Hobby h WHERE h.description = :description")})
 public class Hobby implements Serializable {
+
+    @ManyToMany(mappedBy = "hobbies")
+    private List<Person> persons;
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
-    @Size(max = 30)
-    @Column(name = "name")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     private String name;
-    @Size(max = 30)
-    @Column(name = "description")
     private String description;
 
-    
-    @ManyToMany
-    List<Person> people = new ArrayList<>();
-    
     public Hobby() {
     }
 
@@ -60,12 +33,12 @@ public class Hobby implements Serializable {
         this.description = description;
     }
 
-    public Integer getId() {
-        return id;
+    public List<Person> getPersons() {
+        return persons;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPersons(List<Person> persons) {
+        this.persons = persons;
     }
 
     public String getName() {
@@ -82,6 +55,10 @@ public class Hobby implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override
@@ -106,7 +83,7 @@ public class Hobby implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.Hobby[ id=" + id + " ]";
+        return "entities.Hobby[ id=" + id + " ]";
     }
-    
+
 }

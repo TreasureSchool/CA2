@@ -6,65 +6,42 @@
 package Entity;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.ManyToOne;
 
 /**
- *
  * @author Joachim
  */
 @Entity
-@Table(name = "phone")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Phone.findAll", query = "SELECT p FROM Phone p"),
-    @NamedQuery(name = "Phone.findById", query = "SELECT p FROM Phone p WHERE p.id = :id"),
-    @NamedQuery(name = "Phone.findByNumber", query = "SELECT p FROM Phone p WHERE p.number = :number"),
-    @NamedQuery(name = "Phone.findByDescription", query = "SELECT p FROM Phone p WHERE p.description = :description")})
 public class Phone implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
-    @Column(name = "number")
-    private Integer number;
-    @Size(max = 50)
-    @Column(name = "description")
+    private Long id;
+    
+    private String number;
     private String description;
+    
+    @ManyToOne
+    private InfoEntity entity;
 
     public Phone() {
     }
 
-    public Phone(int number, String description) {
+    public Phone(String number, String description) {
         this.number = number;
         this.description = description;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
@@ -74,6 +51,22 @@ public class Phone implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public InfoEntity getEntity() {
+        return entity;
+    }
+
+    public void setEntity(InfoEntity entity) {
+        this.entity = entity;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
@@ -98,7 +91,7 @@ public class Phone implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.Phone[ id=" + id + " ]";
+        return "entities.Phone[ id=" + id + " ]";
     }
     
 }

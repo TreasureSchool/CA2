@@ -4,13 +4,10 @@
  * and open the template in the editor.
  */
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import facade.Facade;
-import facade.IFacade;
+import javax.persistence.Persistence;
 import static org.junit.Assert.*;
 
 /**
@@ -19,26 +16,13 @@ import static org.junit.Assert.*;
  */
 public class JunitTest {
     
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("0PU");
+    Facade facade = new Facade(emf);
     public JunitTest() {
-    }
-    
-    @Before
-    public void setUp() {
-    
-    EntityManagerFactory emf;
-    EntityManager em;
-    Facade facade = new Facade();
-    }
-    
-    @After
-    public void tearDown() {
     }
     
     @Test
     public void testPersonTlf(){
-        
-        int tlf = 12345678;
-        facade.
         
     }
     

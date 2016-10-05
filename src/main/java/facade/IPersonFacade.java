@@ -24,7 +24,7 @@ public interface IPersonFacade {
     Person editPerson(Person person, long id);
     Person getPerson(long id);
     List<Person> getPersons();
-    Person GetPersonInfoTlf(int tlf);
+    Person GetPersonInfoTlf(String tlf);
     List<Person> getPersonsFromZipcode(String city);
     List<Person> PeopleWithHobby(String hobby);
     int HobbyCount(String hobby);

@@ -203,12 +203,12 @@ public class PersonFacade implements IPersonFacade {
     }
 
     @Override
-    public Person GetPersonInfoTlf(int tlf) {
+    public Person GetPersonInfoTlf(String tlf) {
         addEntityManager(emf);
         Person person;
         try{
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT e FROM Phone e WHERE e.number = :number").setParameter("number", tlf);
+            Query query = em.createQuery("SELECT e FROM Person e WHERE e.phones = :number").setParameter("number", tlf);
             person = (Person) query.getSingleResult();
             em.getTransaction().commit();
         } finally {

@@ -22,10 +22,10 @@ public class SchemaGenerator {
         Person p1 = new Person("Jon", "Christensen", "dwp@dwp.com");
         Person p2 = new Person("Joachim", "Christensen", "dwp@dwp.com");
         
-        Company c = new Company("DWP Web", "Programming og development", "384729", 1, 1500000.00,"daniel@dwpweb.dk");
-        Company c1 = new Company("Mo's kebab", "Making kebabs", "352349", 1, 30.00,"moha@mohamed.dk");
-        Company c2 = new Company("Saeid IT support", "IT support", "234239", 1, 500.50,"hazem@saeid.dk");
-        Company c3 = new Company("CES A/S", "Programming og development", "938472", 1, 1000.00,"emil@peder.dk");
+        Company c = new Company("Bobs burgers", "Burgers", "384729", 1, 1500000.00,"Joachim@gmail.dk");
+        Company c1 = new Company("Sue's sewing", "Sewing shop", "352349", 1, 30.00,"nikolai@gmail.dk");
+        Company c2 = new Company("Niels' IT support", "IT support", "234239", 1, 500.50,"peter@Gmail.dk");
+        Company c3 = new Company("Complete Garbage A/S", "Trashsite Service", "938472", 1, 1000.00,"martin@gmail.dk");
 
         Address address = new Address("Nygardsvej 123", new CityInfo(2980, "Kokkedal"));
         Address address1 = new Address("Gaggervej 72", new CityInfo(3000, "Helsingoer"));

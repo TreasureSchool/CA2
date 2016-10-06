@@ -1,10 +1,64 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <title>Start Page</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <p>Indsæt person</p> 
+        <br>
+        <div class="col-sm-6">
+            <form action="action_page.php">
+                First name:<br>
+                <input type="text" name="firstname" value="">
+                <br>
+                Last name:<br>
+                <input type="text" name="lastname" value="">
+                <br>
+                Hobby:<br>
+                <input type="text" name="hobby" value="">
+                E-mail:<br>
+                <input type="text" name="email" value="">
+                <br>
+                Address:<br>
+                <input type="text" name="address" value="">
+                <br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        <p>Indsæt Company</p>
+        <div class="col-sm-6">
+            <form action="action_page.php">
+                Company name:<br>
+                <input type="text" name="companyname" value="">
+                <br>
+                Description:<br>
+                <input type="text" name="desc" value="">
+                <br>
+                CVR:<br>
+                <input type="text" name="cvr" value="">
+                Number Employees:<br>
+                <input type="text" name="numemployee" value="">
+                <br>
+                Market Value:<br>
+                <input type="text" name="marketvalue" value="">
+                <br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        <p>Liste af Personer</p>
+        <div class="col-sm-6">
+            
+        </div>
     </body>
+    
 </html>

@@ -15,7 +15,6 @@ import javax.persistence.Query;
  */
 public class PersonFacade implements IPersonFacade {
     
-    
 
     EntityManagerFactory emf;
     EntityManager em;

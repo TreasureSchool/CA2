@@ -5,7 +5,7 @@
  */
 package Rest;
 
-
+import Entity.Person;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ws.rs.core.Context;
@@ -14,15 +14,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import facade.PersonFacade;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
 
 /**
  * REST Web Service
@@ -31,8 +35,7 @@ import java.util.Random;
  */
 @Path("person")
 public class PersonResource {
-    
-    
+
     private static HashMap<Integer, String> persons = new HashMap<Integer, String>() {
         {
             put(1, "Nicolai Mikkelsen");
@@ -41,21 +44,27 @@ public class PersonResource {
             put(4, "Bæskubberen");
         }
     };
- 
+
     private Gson gson = new com.google.gson.GsonBuilder().setPrettyPrinting().create();
-    
+
     @Context
     private UriInfo context;
-    
 
     /**
      * Creates a new instance of GenericResource
      */
     public PersonResource() {
+
     }
+
+    EntityManagerFactory emf;
+    EntityManager em;
+
+    PersonFacade pf = new PersonFacade(emf);
 
     /**
      * Retrieves representation of an instance of Entity.PersonResource
+     *
      * @return an instance of java.lang.String
      */
     @GET
@@ -69,8 +78,7 @@ public class PersonResource {
         String jsonRes = gson.toJson(PersonTest);
         return jsonRes;
     }
-    
-    
+
     @GET
     @Path("random")
     @Produces(MediaType.APPLICATION_JSON)
@@ -78,7 +86,7 @@ public class PersonResource {
         Gson gson = new com.google.gson.GsonBuilder().create();
         JsonObject RPeople = new JsonObject();
         List<String> peopleList = new ArrayList<>();
-        for (int i = 0; i < persons.size()+1; i++) {
+        for (int i = 0; i < persons.size() + 1; i++) {
             peopleList.add(persons.get(i));
         }
         int randomPerson = new Random().nextInt(peopleList.size());
@@ -86,6 +94,37 @@ public class PersonResource {
         RPeople.addProperty("quote", randompeople);
         String jsonRes = gson.toJson(RPeople);
         return jsonRes;
-        
+
     }
+
+    @GET
+    @Path("persons/{userid}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Person getUserById(@PathParam("userid") int userid) {
+        return pf.getPerson(userid);
     }
+
+    @POST
+    @Path("/persons/add")
+    @Produces(MediaType.APPLICATION_XML)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void addUser(@FormParam("id") int id,
+            @FormParam("firstName") String firstname,
+            @FormParam("lastName") String lastname,
+            //    @FormParam("hobby") String hobby,
+            @FormParam("email") String email) throws IOException {
+//  @FormParam("address") String address){
+
+        Person p = new Person(firstname, lastname, email);
+        pf.addPerson(p);
+
+    }
+    
+        @GET
+        @Path("persons")
+        @Produces(MediaType.TEXT_PLAIN)
+        public List<Person> getUsers() {
+        return pf.getPersons();
+        }
+
+}

@@ -1,10 +1,68 @@
 <!DOCTYPE html>
 <html>
+
     <head>
-        <title>Start Page</title>
+        <title>CA2 Restful</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="script/script.js"></script>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>CA2 Restful</h1>
+        <br>
+        <div class="col-sm-6"  style="background-color:lavender">
+            <p>Indsæt person</p> 
+            <form action="action_page.php" id="person">
+                First name:<br>
+                <input type="text" id="firstname" name="firstname" value="">
+                <br>
+                Last name:<br>
+                <input type="text" id="lastname" name="lastname" value="">
+                <br>
+                Hobby:<br>
+                <input type="text" id="hobby" name="hobby" value="">
+                <br>
+                E-mail:<br>
+                <input type="text" id="email" name="email" value="">
+                <br>
+                Address:<br>
+                <input type="text" id="address" name="address" value="">
+                <br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        <div class="col-sm-6" style="background-color:lavenderblush">
+            <p>Indsæt Company</p>
+            <form action="action_page.php" id="company">
+                Company name:<br>
+                <input type="text" id="companyname" name="companyname" value="">
+                <br>
+                Description:<br>
+                <input type="text" id="desc" name="desc" value="">
+                <br>
+                CVR:<br>
+                <input type="text" id="cvr" name="cvr" value="">
+                <br>
+                Number Employees:<br>
+                <input type="text" id="numemployee" name="numemployee" value="">
+                <br>
+                Market Value:<br>
+                <input type="text" id="marketvalue" name="marketvalue" value="">
+                <br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        
+        <div class="col-sm-6" style="background-color:lavenderblush">
+        <p>Liste af Personer</p>    
+        </div>
     </body>
+        
 </html>

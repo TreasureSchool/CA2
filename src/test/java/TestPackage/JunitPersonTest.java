@@ -1,11 +1,15 @@
 package TestPackage;
 
+import Entity.Address;
+import Entity.CityInfo;
 import Entity.Hobby;
 import Entity.Person;
 import Entity.Phone;
 import javax.persistence.EntityManagerFactory;
 import org.junit.Test;
 import facade.PersonFacade;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Persistence;
 import static org.junit.Assert.assertEquals;
 
@@ -35,6 +39,28 @@ public class JunitPersonTest {
         testPerson.addHobby(hb);
         testPerson.addPhone(ph1);
         pf.addPerson(testPerson);
-        assertEquals(testPerson, pf.GetPersonInfoTlf("1234567"));
+        Person resultPerson = pf.GetPersonInfoTlf(ph1.getNumber());
+        assertEquals(testPerson, resultPerson);
+    }
+    @Test
+    public void peopleByZip(){
+        Person testPerson = new Person("Joachim", "Ellingsgaard", "test@tests.com");
+        Person testPerson2 = new Person("Joachim", "Ellingsgaard", "test@tests.com");
+        Person testPerson3 = new Person("Joachim", "Ellingsgaard", "test@tests.com");
+        
+        Address address1 = new Address("Test", new CityInfo(9999, "Testland"));
+        Address address2 = new Address("Test2", new CityInfo(9994, "Testcountry"));
+        
+        testPerson.setAddress(address2);
+        testPerson2.setAddress(address1);
+        testPerson3.setAddress(address2);
+        
+        pf.addPerson(testPerson);
+        pf.addPerson(testPerson2);
+        pf.addPerson(testPerson3);
+        List<Person> testList = new ArrayList<>();
+        testList.add(testPerson);
+        testList.add(testPerson3);
+        assertEquals(testList, pf.getPersonsFromZipcode(address2.getCity().getZipCode()));
     }
 }

@@ -38,7 +38,7 @@ public class PersonResource {
             put(1, "Nicolai Mikkelsen");
             put(2, "Peter Henriksen");
             put(3, "Ib Skåbe");
-            put(4, "Bæskubber");
+            put(4, "Bæskubberen");
         }
     };
  

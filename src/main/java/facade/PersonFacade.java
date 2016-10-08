@@ -237,7 +237,6 @@ public class PersonFacade implements IPersonFacade {
         return person;
     }
 
-    @Override
     public List<Person> getPersonsFromZipcode(String city) {
         addEntityManager(emf);
         List<Person> people;

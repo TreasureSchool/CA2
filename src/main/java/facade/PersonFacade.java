@@ -116,17 +116,17 @@ public class PersonFacade implements IPersonFacade {
 //        return person;
 //>>>>>>> origin/master
 //    }
-//
-//    private CityInfo getCityInfo(int zipCode) {
-//        CityInfo cityInfo = null;
-//        try {
-//            cityInfo = em.createQuery("SELECT c FROM CityInfo c WHERE c.zip = :zip", CityInfo.class).setParameter("zip", zipCode).getResultList().get(0);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return cityInfo;
-//    }
+
+    private CityInfo getCityInfo(int zipCode) {
+        CityInfo cityInfo = null;
+        try {
+            cityInfo = em.createQuery("SELECT c FROM CityInfo c WHERE c.zip = :zip", CityInfo.class).setParameter("zip", zipCode).getResultList().get(0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cityInfo;
+    }
     
     @Override
     public Person addHobbyToPerson(Hobby hobby, long id) {

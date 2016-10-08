@@ -1,6 +1,7 @@
 package facade;
 
 import Entity.Address;
+import Entity.CityInfo;
 import Entity.Company;
 import Entity.Phone;
 import java.util.List;
@@ -29,12 +30,40 @@ public class CompanyFacade implements ICompanyFacade{
         addEntityManager(emf);
             try{
                 em.getTransaction().begin();
+
+                if (company.getAddress() != null) {
+
+                    CityInfo city = getCityInfo(company.getAddress().getCity().getZipCode());
+
+                    if (city != null) {
+                        company.getAddress().setCity(city);
+                        em.merge(company);
+                        em.getTransaction().commit();
+                        return company;
+                    }
+                }
+
                 em.persist(company);
+
                 em.getTransaction().commit();
             }finally{
                 em.close();
             }
         return company;
+    }
+    
+    private CityInfo getCityInfo(int zipCode) {
+        CityInfo cityInfo = null;
+        addEntityManager(emf);
+
+        try {
+            cityInfo = em.createQuery("SELECT c FROM CityInfo c WHERE c.zip = :zip", CityInfo.class).setParameter("zip", zipCode).getResultList().get(0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return cityInfo;
     }
 
     @Override
@@ -43,7 +72,7 @@ public class CompanyFacade implements ICompanyFacade{
         Company company;
             try{
                 em.getTransaction().begin();
-                company = em.find(Company.class, cvr);
+                company = em.createQuery("SELECT c FROM Company c WHERE c.cvr = :cvr", Company.class).setParameter("cvr", cvr).getSingleResult();
                 em.getTransaction().commit();
             }finally{
                 em.close();
@@ -71,7 +100,9 @@ public class CompanyFacade implements ICompanyFacade{
         Company company;
             try{
                 em.getTransaction().begin();
-                company = em.find(Company.class, number);
+                Phone phone = (Phone) em.createQuery("Select e FROM Phone e WHERE e.number = :number").setParameter("number", number).getSingleResult();
+                Query query = em.createQuery("Select e FROM Person e WHERE :phone MEMBER OF e.phones").setParameter("phone", phone);
+                company = (Company) query.getSingleResult();
                 em.getTransaction().commit();
             }finally{
                 em.close();

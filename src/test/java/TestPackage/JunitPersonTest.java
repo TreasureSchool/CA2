@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class JunitPersonTest {
     
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("0PUTest2");
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("0PUTest");
     PersonFacade pf = new PersonFacade(emf);
     public JunitPersonTest() {
     }
@@ -62,5 +62,34 @@ public class JunitPersonTest {
         testList.add(testPerson);
         testList.add(testPerson3);
         assertEquals(testList, pf.getPersonsFromZipcode(address2.getCity().getZipCode()));
+    }
+    @Test
+    public void deletePerson(){
+        Person testPerson = new Person("Joachim", "Ellingsgaard", "test@tests.com");
+        Person resultPerson = null;
+        
+        pf.addPerson(testPerson);
+        pf.deletePerson(testPerson.getId());
+        assertEquals(pf.getPerson(testPerson.getId()), resultPerson);
+    }
+    @Test
+    public void getPeople(){
+        Person testPerson = new Person("Joachim", "Ellingsgaard", "test@tests.com");
+        Person testPerson2 = new Person("Joachim", "Ellingsgaard", "test@tests.com");
+        Person testPerson3 = new Person("Joachim", "Ellingsgaard", "test@tests.com");
+        
+        pf.addPerson(testPerson);
+        pf.addPerson(testPerson2);
+        pf.addPerson(testPerson3);
+        List<Person> testList = new ArrayList<>();
+        testList.add(testPerson);
+        testList.add(testPerson2);
+        testList.add(testPerson3);
+        List<Person> resultList = pf.getPersons();
+        assertEquals(testList, resultList);
+    }
+    @Test
+    public void getSomething(){
+        
     }
 }

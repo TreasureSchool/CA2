@@ -6,6 +6,8 @@
 package tableMaker;
 
 import Entity.Person;
+import facade.PersonFacade;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
@@ -15,13 +17,13 @@ import javax.persistence.Persistence;
 public class Tester {
 
     public static void main(String[] args) {
-
-        Persistence.generateSchema("CA2PU", null);
-                
-        Person p1 = new Person("navn", "efternavn", "qwe@3wqe.dk");
-        Person p2 = new Person("Jon", "Christensen", "dwp@dwp.com");
-        Person p3 = new Person("Joachim", "Christensen", "dwp@dwp.com");
         
+        PersonFacade pf = new PersonFacade(Persistence.createEntityManagerFactory("CA2PU"));
+        Person p = new Person();
+        p.setFirstName("Nicolai");
+        p.setLastName("Mikkelsen");
+        p.setEmail("hej@hotaåk");
         
+        pf.addPerson(p);
     }
 }

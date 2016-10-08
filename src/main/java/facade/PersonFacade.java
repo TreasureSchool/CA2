@@ -14,32 +14,63 @@ import javax.persistence.Query;
  * @author Martin
  */
 public class PersonFacade implements IPersonFacade {
-    
-    
 
     EntityManagerFactory emf;
     EntityManager em;
+
     public PersonFacade(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
+
+    public PersonFacade() {
+
+    }
+
     public void addEntityManager(EntityManagerFactory emf) {
         em = emf.createEntityManager();
     }
 
+    public Person getPerson(int ID) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        Person p = em.find(Person.class, ID);
+        em.getTransaction().commit();
+        if (p != null) {
+            em.close();
+            return p;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Person addPerson(Person person) {
+        addEntityManager(emf);
+        try {
+            em.getTransaction().begin();
+            em.persist(person);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        return person;
+    }
+
     @Override
     public List<Person> PeopleWithHobby(String hobby) {
-    
+
         addEntityManager(emf);
         List<Person> people;
-            try{
-                em.getTransaction().begin();
-                Query query = em.createQuery("Select e FROM Person e WHERE e.hobbies = :hobby").setParameter("hobby", hobby);
-                people = query.getResultList();
-                em.getTransaction().commit();
-            }finally{
-                em.close();
-            }
+        try {
+            em.getTransaction().begin();
+            Query query = em.createQuery("Select e FROM Person e WHERE e.hobbies = :hobby").setParameter("hobby", hobby);
+            people = query.getResultList();
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
         return people;
     }
 
@@ -47,44 +78,31 @@ public class PersonFacade implements IPersonFacade {
     public List<Integer> AllZips(CityInfo ci) {
         addEntityManager(emf);
         List<Integer> zips;
-            try{
-                em.getTransaction().begin();
-                Query query = em.createQuery("Select e.zip FROM CityInfo e");
-                zips = query.getResultList();
-                em.getTransaction().commit();
-            }finally{
-                em.close();
-            }
+        try {
+            em.getTransaction().begin();
+            Query query = em.createQuery("Select e.zip FROM CityInfo e");
+            zips = query.getResultList();
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
         return zips;
-    }
-
-    @Override
-    public Person addPerson(Person person) {
-        addEntityManager(emf);
-            try{
-                em.getTransaction().begin();
-                em.persist(person);
-                em.getTransaction().commit();
-            }finally{
-                em.close();
-            }
-        return person;
     }
 
     @Override
     public Person addHobbyToPerson(Hobby hobby, long id) {
         addEntityManager(emf);
         Person person = null;
-            try{
-                em.getTransaction().begin();
-                person = em.find(Person.class, id);
-                hobby = addHobby(hobby);
-                person.addHobby(hobby);
-                em.merge(person);
-                em.getTransaction().commit();
-            }finally{
-                em.close();
-            }
+        try {
+            em.getTransaction().begin();
+            person = em.find(Person.class, id);
+            hobby = addHobby(hobby);
+            person.addHobby(hobby);
+            em.merge(person);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
         return person;
     }
 
@@ -109,15 +127,15 @@ public class PersonFacade implements IPersonFacade {
     public Person addPhoneToPerson(Phone phone, long id) {
         addEntityManager(emf);
         Person person = null;
-            try{
-                em.getTransaction().begin();
-                person = em.find(Person.class, id);
-                person.addPhone(phone);
-                em.merge(person);
-                em.getTransaction().commit();
-            }finally{
-                em.close();
-            }
+        try {
+            em.getTransaction().begin();
+            person = em.find(Person.class, id);
+            person.addPhone(phone);
+            em.merge(person);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
         return person;
     }
 
@@ -193,7 +211,7 @@ public class PersonFacade implements IPersonFacade {
     public List<Person> getPersons() {
         addEntityManager(emf);
         List<Person> people;
-        try{
+        try {
             em.getTransaction().begin();
             Query query = em.createQuery("SELECT e FROM Person e");
             people = query.getResultList();
@@ -208,7 +226,7 @@ public class PersonFacade implements IPersonFacade {
     public Person GetPersonInfoTlf(String tlf) {
         addEntityManager(emf);
         Person person;
-        try{
+        try {
             em.getTransaction().begin();
             Query query = em.createQuery("SELECT e FROM Person e WHERE e.phones = :number").setParameter("number", tlf);
             person = (Person) query.getSingleResult();
@@ -223,14 +241,14 @@ public class PersonFacade implements IPersonFacade {
     public List<Person> getPersonsFromZipcode(String city) {
         addEntityManager(emf);
         List<Person> people;
-            try{
-                em.getTransaction().begin();
-                Query query = em.createQuery("Select e FROM Person e WHERE e.address.city = :city").setParameter("city", city);
-                people = query.getResultList();
-                em.getTransaction().commit();
-            }finally{
-                em.close();
-            }
+        try {
+            em.getTransaction().begin();
+            Query query = em.createQuery("Select e FROM Person e WHERE e.address.city = :city").setParameter("city", city);
+            people = query.getResultList();
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
         return people;
     }
 
@@ -238,14 +256,14 @@ public class PersonFacade implements IPersonFacade {
     public int HobbyCount(String hobby) {
         addEntityManager(emf);
         int peopleCount;
-            try{
-                em.getTransaction().begin();
-                Query query = em.createQuery("Select e FROM Person e WHERE e.hobbies = :hobby").setParameter("hobby", hobby);
-                peopleCount = query.getResultList().size();
-                em.getTransaction().commit();
-            }finally{
-                em.close();
-            }
+        try {
+            em.getTransaction().begin();
+            Query query = em.createQuery("Select e FROM Person e WHERE e.hobbies = :hobby").setParameter("hobby", hobby);
+            peopleCount = query.getResultList().size();
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
         return peopleCount;
     }
 }

@@ -6,15 +6,18 @@ import Entity.Company;
 import Entity.Hobby;
 import Entity.Person;
 import Entity.Phone;
+import facade.PersonFacade;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import sun.security.pkcs11.P11Util;
 
 public class SchemaGenerator {
-
+        
+    
     public static void main(String[] args) {
         Persistence.generateSchema("CA2PU", null);
 
-//        EntityManager em = Persistence.createEntityManagerFactory("0PUTest").createEntityManager();
 //
 //        em.getTransaction().begin();
 //

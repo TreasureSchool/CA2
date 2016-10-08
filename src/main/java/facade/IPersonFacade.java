@@ -20,6 +20,7 @@ public interface IPersonFacade {
     Person getPerson(long id);
     List<Person> getPersons();
     Person GetPersonInfoTlf(String tlf);
+    List<Person> getPersonsFromZipcode(int zip);
     List<Person> PeopleWithHobby(String hobby);
     int HobbyCount(String hobby);
     List<Integer> AllZips(CityInfo ci);

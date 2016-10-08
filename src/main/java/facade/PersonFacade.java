@@ -1,6 +1,7 @@
 package facade;
 
 import Entity.Address;
+import static Entity.Address_.city;
 import Entity.CityInfo;
 import Entity.Hobby;
 import Entity.Person;
@@ -14,6 +15,7 @@ import javax.persistence.Query;
  * @author Martin
  */
 public class PersonFacade implements IPersonFacade {
+
 
     EntityManagerFactory emf;
     EntityManager em;
@@ -87,8 +89,45 @@ public class PersonFacade implements IPersonFacade {
             em.close();
         }
         return zips;
+
     }
 
+//    @Override
+//    public Person addPerson(Person person) {
+//        addEntityManager(emf);
+//            try{
+//                em.getTransaction().begin();
+//
+//                if (person.getAddress() != null) {
+//
+//                CityInfo city = getCityInfo(person.getAddress().getCity().getZipCode());
+//
+//                if (city != null) {
+//                    person.getAddress().setCity(city);
+//                }
+//            }
+//
+//            em.persist(person);
+//
+//            em.getTransaction().commit();
+//            }finally{
+//                em.close();
+//            }
+//        return person;
+//>>>>>>> origin/master
+//    }
+//
+//    private CityInfo getCityInfo(int zipCode) {
+//        CityInfo cityInfo = null;
+//        try {
+//            cityInfo = em.createQuery("SELECT c FROM CityInfo c WHERE c.zip = :zip", CityInfo.class).setParameter("zip", zipCode).getResultList().get(0);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return cityInfo;
+//    }
+    
     @Override
     public Person addHobbyToPerson(Hobby hobby, long id) {
         addEntityManager(emf);
@@ -228,7 +267,8 @@ public class PersonFacade implements IPersonFacade {
         Person person;
         try {
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT e FROM Person e WHERE e.phones = :number").setParameter("number", tlf);
+            Phone phone = (Phone) em.createQuery("Select e FROM Phone e WHERE e.number = :number").setParameter("number", tlf).getSingleResult();
+            Query query = em.createQuery("Select e FROM Person e WHERE :phone MEMBER OF e.phones").setParameter("phone", phone);
             person = (Person) query.getSingleResult();
             em.getTransaction().commit();
         } finally {
@@ -237,7 +277,8 @@ public class PersonFacade implements IPersonFacade {
         return person;
     }
 
-    public List<Person> getPersonsFromZipcode(String city) {
+    @Override
+    public List<Person> getPersonsFromZipcode(int zip) {
         addEntityManager(emf);
         List<Person> people;
         try {
@@ -248,6 +289,14 @@ public class PersonFacade implements IPersonFacade {
         } finally {
             em.close();
         }
+            try{
+                em.getTransaction().begin();
+                CityInfo city = getCityInfo(zip);
+                people = em.createQuery("SELECT p FROM Person p WHERE p.address.city = :city", Person.class).setParameter("city", city).getResultList();
+                em.getTransaction().commit();
+            }finally{
+                em.close();
+            }
         return people;
     }
 

@@ -11,9 +11,9 @@ import java.util.List;
 public interface ICompanyFacade {
     Company addCompany(Company company);
 
-    Company getCompanyOnCvr(int cvr);
+    Company getCompanyOnCvr(String cvr);
 
-    Company getCompanyOnId(int id);
+    Company getCompanyOnId(Long id);
 
     Company getCompanyOnPhone(String number);
     

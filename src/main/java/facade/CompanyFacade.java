@@ -67,12 +67,12 @@ public class CompanyFacade implements ICompanyFacade{
     }
 
     @Override
-    public Company getCompanyOnCvr(int cvr) {
+    public Company getCompanyOnCvr(String cvr) {
         addEntityManager(emf);
         Company company;
             try{
                 em.getTransaction().begin();
-                company = em.createQuery("SELECT c FROM Company c WHERE c.cvr = :cvr", Company.class).setParameter("cvr", cvr).getSingleResult();
+                company = em.createQuery("SELECT c FROM Company c WHERE c.cvr = :cvr", Company.class).setParameter("cvr", cvr).getResultList().get(0);
                 em.getTransaction().commit();
             }finally{
                 em.close();
@@ -81,7 +81,7 @@ public class CompanyFacade implements ICompanyFacade{
     }
 
     @Override
-    public Company getCompanyOnId(int id) {
+    public Company getCompanyOnId(Long id) {
         addEntityManager(emf);
         Company company;
             try{
@@ -101,7 +101,7 @@ public class CompanyFacade implements ICompanyFacade{
             try{
                 em.getTransaction().begin();
                 Phone phone = (Phone) em.createQuery("Select e FROM Phone e WHERE e.number = :number").setParameter("number", number).getSingleResult();
-                Query query = em.createQuery("Select e FROM Person e WHERE :phone MEMBER OF e.phones").setParameter("phone", phone);
+                Query query = em.createQuery("Select e FROM Company e WHERE :phone MEMBER OF e.phones").setParameter("phone", phone);
                 company = (Company) query.getSingleResult();
                 em.getTransaction().commit();
             }finally{

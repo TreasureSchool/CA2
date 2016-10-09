@@ -33,19 +33,6 @@ public class PersonFacade implements IPersonFacade {
         em = emf.createEntityManager();
     }
 
-    public Person getPerson(int ID) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        Person p = em.find(Person.class, ID);
-        em.getTransaction().commit();
-        if (p != null) {
-            em.close();
-            return p;
-        } else {
-            return null;
-        }
-    }
-
     @Override
     public List<Person> PeopleWithHobby(String hobby) {
         addEntityManager(emf);
@@ -135,7 +122,7 @@ public class PersonFacade implements IPersonFacade {
             em.merge(person);
             em.getTransaction().commit();
         } finally {
-            em.close();
+            
         }
         return person;
     }

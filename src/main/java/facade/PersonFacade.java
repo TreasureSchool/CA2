@@ -6,6 +6,7 @@ import Entity.CityInfo;
 import Entity.Hobby;
 import Entity.Person;
 import Entity.Phone;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -46,38 +47,33 @@ public class PersonFacade implements IPersonFacade {
     }
 
     @Override
-    public Person addPerson(Person person) {
+    public List<Person> PeopleWithHobby(String hobby) {
         addEntityManager(emf);
+        Hobby h = null;
+
+        List<Long> personIDs = new ArrayList();
+        List<Person> persons = new ArrayList();
+
         try {
-            em.getTransaction().begin();
-            em.persist(person);
-            em.getTransaction().commit();
+            h = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :name", Hobby.class).setParameter("name", hobby).getResultList().get(0);
+            if (h == null) {
+                return persons;
+            }
+            personIDs = (List<Long>) em.createNativeQuery("SELECT person_hobby.`persons_ID` FROM person_hobby WHERE `hobbies_ID` = ?id").setParameter("id", h.getId()).getResultList();
+            if (personIDs.isEmpty()) {
+                return persons;
+            }
+            for (Long id : personIDs) {
+                persons.add(em.find(Person.class, id));
+            }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            em.close();
         }
-        return person;
+        return persons;
     }
 
     @Override
-    public List<Person> PeopleWithHobby(String hobby) {
-
-        addEntityManager(emf);
-        List<Person> people;
-        try {
-            em.getTransaction().begin();
-            Query query = em.createQuery("Select e FROM Person e WHERE e.hobbies = :hobby").setParameter("hobby", hobby);
-            people = query.getResultList();
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-        return people;
-    }
-
-    @Override
-    public List<Integer> AllZips(CityInfo ci) {
+    public List<Integer> AllZips() {
         addEntityManager(emf);
         List<Integer> zips;
         try {
@@ -92,30 +88,29 @@ public class PersonFacade implements IPersonFacade {
 
     }
 
-//    @Override
-//    public Person addPerson(Person person) {
-//        addEntityManager(emf);
-//            try{
-//                em.getTransaction().begin();
-//
-//                if (person.getAddress() != null) {
-//
-//                CityInfo city = getCityInfo(person.getAddress().getCity().getZipCode());
-//
-//                if (city != null) {
-//                    person.getAddress().setCity(city);
-//                }
-//            }
-//
-//            em.persist(person);
-//
-//            em.getTransaction().commit();
-//            }finally{
-//                em.close();
-//            }
-//        return person;
-//>>>>>>> origin/master
-//    }
+    @Override
+    public Person addPerson(Person person) {
+        addEntityManager(emf);
+              try{
+                em.getTransaction().begin();
+
+                if (person.getAddress() != null) {
+
+                CityInfo city = getCityInfo(person.getAddress().getCity().getZipCode());
+
+                if (city != null) {
+                    person.getAddress().setCity(city);
+                }
+            }
+
+            em.persist(person);
+
+            em.getTransaction().commit();
+            }finally{
+                em.close();
+            }
+        return person;
+    }
 
     private CityInfo getCityInfo(int zipCode) {
         CityInfo cityInfo = null;
@@ -281,14 +276,6 @@ public class PersonFacade implements IPersonFacade {
     public List<Person> getPersonsFromZipcode(int zip) {
         addEntityManager(emf);
         List<Person> people;
-        try {
-            em.getTransaction().begin();
-            Query query = em.createQuery("Select e FROM Person e WHERE e.address.city = :city").setParameter("city", city);
-            people = query.getResultList();
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
             try{
                 em.getTransaction().begin();
                 CityInfo city = getCityInfo(zip);

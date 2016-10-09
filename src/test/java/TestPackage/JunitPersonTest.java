@@ -14,7 +14,6 @@ import javax.persistence.Persistence;
 import static org.junit.Assert.assertEquals;
 
 /**
- *
  * @author Martin
  */
 public class JunitPersonTest {
@@ -48,20 +47,20 @@ public class JunitPersonTest {
         Person testPerson2 = new Person("Joachim", "Ellingsgaard", "test@tests.com");
         Person testPerson3 = new Person("Joachim", "Ellingsgaard", "test@tests.com");
         
-        Address address1 = new Address("Test", new CityInfo(9999, "Testland"));
-        Address address2 = new Address("Test2", new CityInfo(9994, "Testcountry"));
+        Address address = new Address("Test", new CityInfo(9999, "Testland"));
         
-        testPerson.setAddress(address2);
-        testPerson2.setAddress(address1);
-        testPerson3.setAddress(address2);
+        testPerson.setAddress(address);
+        testPerson2.setAddress(address);
+        testPerson3.setAddress(address);
         
         pf.addPerson(testPerson);
         pf.addPerson(testPerson2);
         pf.addPerson(testPerson3);
         List<Person> testList = new ArrayList<>();
         testList.add(testPerson);
+        testList.add(testPerson2);
         testList.add(testPerson3);
-        assertEquals(testList, pf.getPersonsFromZipcode(address2.getCity().getZipCode()));
+        assertEquals(testList, pf.getPersonsFromZipcode(address.getCity().getZipCode()));
     }
     @Test
     public void deletePerson(){
@@ -75,21 +74,35 @@ public class JunitPersonTest {
     @Test
     public void getPeople(){
         Person testPerson = new Person("Joachim", "Ellingsgaard", "test@tests.com");
-        Person testPerson2 = new Person("Joachim", "Ellingsgaard", "test@tests.com");
-        Person testPerson3 = new Person("Joachim", "Ellingsgaard", "test@tests.com");
         
-        pf.addPerson(testPerson);
-        pf.addPerson(testPerson2);
-        pf.addPerson(testPerson3);
-        List<Person> testList = new ArrayList<>();
-        testList.add(testPerson);
-        testList.add(testPerson2);
-        testList.add(testPerson3);
         List<Person> resultList = pf.getPersons();
+        pf.addPerson(testPerson);
+        List<Person> testList = pf.getPersons();
+        resultList.add(testPerson);
         assertEquals(testList, resultList);
     }
     @Test
-    public void getSomething(){
+    public void getPeopleByHobby(){
+        Person testPerson = new Person("Joachim", "Ellingsgaard", "test@tests.com");
+        Person testPerson2 = new Person("Joachim", "Ellingsgaard", "test@tests.com");
+        Person testPerson3 = new Person("Joachim", "Ellingsgaard", "test@tests.com");
         
+        Hobby hb = new Hobby("Football", "kick ball");
+        Hobby hb1 = new Hobby("Tennis", "hit ball");
+        
+        testPerson.addHobby(hb1);
+        testPerson2.addHobby(hb);
+        testPerson3.addHobby(hb1);
+        pf.addPerson(testPerson);
+        pf.addPerson(testPerson2);
+        List<Person> testList = new ArrayList<>();
+        testList.add(testPerson);
+        assertEquals(testList, pf.PeopleWithHobby(hb1.getName()));
     }
+    /*@Test
+    public void getAllZips(){
+        List<Integer> testList = pf.AllZips();
+        CityInfo testCity = new CityInfo(100000, "Tester");
+        pf.
+    }*/
 }

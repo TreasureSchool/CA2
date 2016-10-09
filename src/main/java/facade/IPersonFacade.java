@@ -23,5 +23,5 @@ public interface IPersonFacade {
     List<Person> getPersonsFromZipcode(int zip);
     List<Person> PeopleWithHobby(String hobby);
     int HobbyCount(String hobby);
-    List<Integer> AllZips(CityInfo ci);
+    List<Integer> AllZips();
 }
